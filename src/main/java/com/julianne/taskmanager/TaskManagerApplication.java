@@ -17,21 +17,22 @@ public class TaskManagerApplication {
         SpringApplication.run(TaskManagerApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner runner(TaskRepository taskRepository) {
-        return args -> {
-
-            // create new task
-            Task task = new Task(
-                    "Make lunch",
-                    "Rice and chicken",
-                    Status.TODO,
-                    LocalDateTime.parse("2025-09-18T14:00:00"),
-                    LocalDateTime.now()
-            );
-
-            taskRepository.save(task);
-        };
-    }
+// used to test saving a collection to the db
+//    @Bean
+//    CommandLineRunner runner(TaskRepository taskRepository) {
+//        return args -> {
+//
+//            // create new task
+//            Task task = new Task(
+//                    "Make lunch",
+//                    "Rice and chicken",
+//                    Status.TODO,
+//                    LocalDateTime.parse("2025-09-18T14:00:00"),
+//                    LocalDateTime.now()
+//            );
+//
+//            taskRepository.save(task);
+//        };
+//    }
 
 }
