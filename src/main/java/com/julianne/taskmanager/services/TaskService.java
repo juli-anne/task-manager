@@ -2,6 +2,7 @@ package com.julianne.taskmanager.services;
 
 import com.julianne.taskmanager.entities.Status;
 import com.julianne.taskmanager.entities.Task;
+import com.julianne.taskmanager.exceptions.ResourceNotFoundException;
 import com.julianne.taskmanager.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class TaskService {
     // return task by id
     public Task getTaskById(String id) {
         return taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found with id " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + id));
     }
 
     // add new task

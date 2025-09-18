@@ -4,9 +4,12 @@ import com.julianne.taskmanager.dtos.TaskRequest;
 import com.julianne.taskmanager.dtos.TaskResponse;
 import com.julianne.taskmanager.entities.Status;
 import com.julianne.taskmanager.entities.Task;
+import com.julianne.taskmanager.exceptions.ResourceNotFoundException;
 import com.julianne.taskmanager.mappers.TaskMapper;
+import com.julianne.taskmanager.repositories.TaskRepository;
 import com.julianne.taskmanager.services.TaskService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +19,11 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
+    private final TaskRepository taskRepository;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, TaskRepository taskRepository) {
         this.taskService = taskService;
+        this.taskRepository = taskRepository;
     }
 
     // get request as TaskRequest, return response as TaskResponse, convert it with TaskMapper
@@ -57,6 +62,8 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable String id) {
-        taskService.deleteTask(id);
+        Task existing = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + id));
+        taskRepository.delete(existing);
     }
 }
